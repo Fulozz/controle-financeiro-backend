@@ -23,7 +23,7 @@ const sendEmail = async (data) => {
           <h1>Telefone: ${data.phone}</h1>
           <h1>Email: ${data.email}</h1>
           <h1>Empresa: ${data.company}</h1>
-          <h1>Descrição: ${data.description}</h1>
+          <h1>message: ${data.message}</h1>
         `
       };
 
