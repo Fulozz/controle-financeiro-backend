@@ -1,10 +1,5 @@
 const User = require('../models/User.model')
 
-// ==> ASync e await
-
-
-// ==> Metodo responsavel
-
 
 exports.registerNewUser = async (req, res)=>{
     try {

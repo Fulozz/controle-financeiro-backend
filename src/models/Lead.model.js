@@ -13,9 +13,9 @@ const leadSchema = new Schema({
     message: { type: String, maxLenght: 150, required: true},  
     },{
     timestamps: true,
-    collection: 'emails'
+    collection: 'leads'
 });
 
-const Lead = mongoose.model('Email', emailSchema);
+const Lead = mongoose.model('Lead', leadSchema);
 
 module.exports = Lead;

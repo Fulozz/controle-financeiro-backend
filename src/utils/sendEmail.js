@@ -13,10 +13,10 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const sendEmail = async (mailOptions) => {
+const sendEmail = async (data) => {
     const mailOptions = {
-        from: process.env.EMAIL,
-        to: 'seu_email@example.com',
+        from: "onboarding@resend.dev",
+        to: 'thiago.sandrade0720@gmail.com',
         subject: 'Novo Lead',
         text: `
           Nome: ${data.name}

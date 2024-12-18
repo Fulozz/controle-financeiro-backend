@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const emailController = require('../controllers/Lead.controller')
+const leadController = require('../controllers/Lead.controller')
 
 
-router.get('mailer', emailController.registerNewLead);
+router.post('mailer', leadController.registerNewLead);
+
+module.exports = router

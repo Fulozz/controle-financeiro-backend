@@ -3,15 +3,16 @@ const Email = require('../models/Lead.model');
 const sendEmail = require('../utils/sendEmail');
 
 exports.registerNewLead = async (req, res)=>{
+    console.log(req.body)
     try {
-        const newEmail = new Email({
+        const newLead = new Email({
             email: req.body.email,
             name: req.body.name,
             phone: req.body.phone,
             company: req.body.company,
             message: req.body.message
         });
-        const email = await newEmail.save();
+        const lead = await newLead.save();
         await sendEmail({
           email: req.body.email,
           name: req.body.name,
@@ -19,7 +20,7 @@ exports.registerNewLead = async (req, res)=>{
           company: req.body.company,
           message: req.body.message
         })
-        return res.status(200).json({ message: 'Email enviado com sucesso', email})
+        return res.status(201).json({ message: 'Email enviado com sucesso', lead})
     } catch (error) {
         res.status(400).json({ error: error })
     }
