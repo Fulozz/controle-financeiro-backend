@@ -17,11 +17,11 @@ const sendEmail = async (data) => {
     const mailOptions = {
         from: "onboarding@resend.dev",
         to: 'thiago.sandrade0720@gmail.com',
-        subject: 'Novo Lead',
+        subject: `Novo lead: ${data.name} - ${data.email}`,
         text: `
           <h1>Nome: ${data.name}</h1>
           <h1>Telefone: ${data.phone}</h1>
-          <h1>Email: ${data.email}</h1>
+          <h1>Email de contato: ${data.email}</h1>
           <h1>Empresa: ${data.company}</h1>
           <h1>message: ${data.message}</h1>
         `
