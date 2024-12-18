@@ -19,11 +19,11 @@ const sendEmail = async (data) => {
         to: 'thiago.sandrade0720@gmail.com',
         subject: 'Novo Lead',
         text: `
-          Nome: ${data.name}
-          Telefone: ${data.phone}
-          Email: ${data.email}
-          Empresa: ${data.company}
-          Descrição: ${data.description}
+          <h1>Nome: ${data.name}</h1>
+          <h1>Telefone: ${data.phone}</h1>
+          <h1>Email: ${data.email}</h1>
+          <h1>Empresa: ${data.company}</h1>
+          <h1>Descrição: ${data.description}</h1>
         `
       };
 
