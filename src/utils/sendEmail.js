@@ -16,14 +16,14 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (data) => {
     const mailOptions = {
         from: "onboarding@resend.dev",
-        to: 'thiago.sandrade0720@gmail.com',
+        to: 'fulozzoficial@outlook.com',
         subject: `Novo lead: ${data.name} - ${data.email}`,
         html: `
           <h1>Nome: ${data.name}</h1>
-          <h1>Telefone: ${data.phone}</h1>
-          <h1>Email de contato: ${data.email}</h1>
-          <h1>Empresa: ${data.company}</h1>
-          <h1>message: ${data.message}</h1>
+          <h4>Telefone: ${data.phone}</h4>
+          <h4>Email de contato: ${data.email}</h4>
+          <h4>Empresa: ${data.company}</h4>
+          <h4>message: ${data.message}</h4>
         `
       };
 
