@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (data) => {
     const mailOptions = {
         from: "onboarding@resend.dev",
-        to: 'fulozzoficial@outlook.com',
+        to: 'thiago.sandrade0720@gmail.com',
         subject: `Novo lead: ${data.name} - ${data.email}`,
         html: `
           <h1>Nome: ${data.name}</h1>
