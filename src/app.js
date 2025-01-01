@@ -27,7 +27,7 @@ app.use(morgan('dev'));
 app.set("mongoose connection", mongooseConnection);
 
 app.use(index);
-app.use('/api/v1', userRoutes)
+app.use('/api/auth/callback', userRoutes)
 app.use('/api/v1', leadRoutes)
 
 module.exports = app;
