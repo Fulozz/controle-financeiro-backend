@@ -7,7 +7,7 @@ module.exports = (req, res, next)=>{
     const token = authHeader && authHeader.split(' ')[1];
 
     if(token == null) return res.sendStatus(401); // Unauthorized
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
+    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
         if(err) return res.sendStatus(403); // Forbidden
         req.userData = user;
         next();
