@@ -1,5 +1,5 @@
 const User = require('../models/User.model')
-
+const jwt = require('jsonwebtoken')
 
 exports.registerNewUser = async (req, res)=>{
     try {
@@ -39,7 +39,8 @@ exports.loginUser = async(req,res)=>{
 
 };
 
-// ==> Método responsável por retornar um determinado 'User'
+// ==> Método responsável por retornar todos os dados de um determinado 'User'
 exports.returnUserProfile = async (req, res) => {
     await res.json( req.userData );
 };
+

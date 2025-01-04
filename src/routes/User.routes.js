@@ -11,6 +11,10 @@ router.post('/login', userController.loginUser)
 
 
 // ==> Rota responsavel por acessar o perfil do usuario: (GET) localhost:3000/api/v1/userProfile
-router.get('/userProfile', auth, userController.returnUserProfile)
+router.get('/profile', auth, userController.returnUserProfile)
+
+router.get('/validate-token', auth, (req, res)=>{
+    res.json({ isAuthenticated: true })
+})
 
 module.exports = router

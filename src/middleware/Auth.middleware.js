@@ -1,16 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next)=>{
-    try {
-    const token = req.headers.authorization.replace('Bearer ', '');
-// ==> Um console para verificar o token
-    console.log(token);
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-    const decoded = jwt.verify(token, 'secret');
-    req.userData = decoded;
-    next();
-
-    } catch (err) {
-        res.status(401).json({ message: 'Falha na autenticacao!' })
-    }
+    if(token == null) return res.sendStatus(401); // Unauthorized
+    jwt.verify(token, 'secrete', (err, user) => {
+        if(err) return res.sendStatus(403); // Forbidden
+        req.userData = user;
+        next();
+    });
 };
+
