@@ -60,7 +60,7 @@ exports.getFinancialReport = async (req, res) => {
         totalRecebido: monthlyTransactions[0]?.totalRecebido || 0,
         totalPago: monthlyTransactions[0]?.totalPago || 0,
       };
-      console.log(result);
+      console.log(result, totalBalance, monthlyTransactions);
       return res.status(200).json({
         message: 'Relatório financeiro gerado com sucesso',
         dados: result
