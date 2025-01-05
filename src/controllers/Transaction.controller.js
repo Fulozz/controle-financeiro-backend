@@ -25,8 +25,7 @@ exports.registerNewTransaction = async (req, res)=>{
 
 exports.getFinancialReport = async (req, res) => {
     try {
-        const userID = req.body.userID
-        const mesRef = req.body.mesRef  
+        const { userID, mesRef } = req.params
         if(!userID || !mesRef){
             return res.status(400).json({ error: 'Dados insuficientes'})
         }
