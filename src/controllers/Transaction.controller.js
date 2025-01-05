@@ -2,12 +2,8 @@ const Transaction = require('../models/Transaction.model')
 
 exports.registerNewTransaction = async (req, res)=>{
     try {
-        const userID = req.body.userID;
-        const data = req.body.data;
-        const mesRef = req.body.mesRef;
-        const valor = req.body.valor;
-        const tipo = req.body.tipo;
-        
+       const { userID, data, mesRef, valor, tipo } = req.body
+        console.log(req.body)
     if(!userID || !data || !mesRef || !valor || !tipo){
         return res.status(400).json({ error: 'Dados insuficientes'})
     }
@@ -22,6 +18,7 @@ exports.registerNewTransaction = async (req, res)=>{
     await newTransaction.save()
     return res.status(201).json({ message: 'Transação registrada com sucesso', newTransaction})
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: error })
     }
 }
@@ -57,6 +54,7 @@ exports.getFinancialReport = async (req, res) => {
             
         }, res.status(200).json({ message: 'Relatório financeiro gerado com sucesso', result}))
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: error })
     }
 }
