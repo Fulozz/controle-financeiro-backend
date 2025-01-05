@@ -41,6 +41,7 @@ exports.loginUser = async(req,res)=>{
 
 // ==> Método responsável por retornar todos os dados de um determinado 'User'
 exports.returnUserProfile = async (req, res) => {
+    console.log(req.userData);
     await res.json( req.userData );
 };
 
