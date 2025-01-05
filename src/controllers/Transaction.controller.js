@@ -56,7 +56,7 @@ exports.getFinancialReport = async (req, res) => {
   
       const result = {
         saldo: totalBalance[0]?.totalBalance || 0,
-        mesReferencia: mesRef,
+        mesRef: mesRef,
         totalRecebido: monthlyTransactions[0]?.totalRecebido || 0,
         totalPago: monthlyTransactions[0]?.totalPago || 0,
       };
