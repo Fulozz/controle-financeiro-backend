@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken')
 exports.registerNewUser = async (req, res)=>{
     try {
         let isUser = await User.find({ email: req.body.email});
-        console.log(isUser);
-
         if(isUser.length >= 1) {
             return res.status(409).json({ message: 'Sorry! This email is already registered!' });
         }
@@ -41,7 +39,6 @@ exports.loginUser = async(req,res)=>{
 
 // ==> Método responsável por retornar todos os dados de um determinado 'User'
 exports.returnUserProfile = async (req, res) => {
-    console.log(req.userData);
     await res.json( req.userData );
 };
 
