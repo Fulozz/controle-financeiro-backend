@@ -38,7 +38,7 @@ exports.getFinancialReport = async (req, res) => {
             },
             {
                 $group: {
-                    _id: '$tipo',
+                    _id: null,
                     totalRecebido: { $sum: { $cond: [{ $eq: ['$tipo', 'recebido']}, '$valor', 0] } },
                     totalPago: { $sum: { $cond: [{ $eq: ['$tipo', 'pago']}, '$valor', 0] } }
                 }
