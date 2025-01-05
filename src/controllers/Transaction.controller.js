@@ -4,6 +4,7 @@ exports.registerNewTransaction = async (req, res)=>{
     try {
        const { userID,  mesRef, valor, tipo } = req.body
         console.log(req.body)
+        const date = new Date().toISOString().slice(0, 10)
     if(!userID || !mesRef || !valor || !tipo){
         return res.status(400).json({ error: 'Dados insuficientes'})
     }
@@ -12,7 +13,7 @@ exports.registerNewTransaction = async (req, res)=>{
         mesRef: mesRef,
         valor: valor,
         tipo: tipo,
-        date: new Date().toISOString().slice(0, 10)
+        date: date
     })
 
     await newTransaction.save()
