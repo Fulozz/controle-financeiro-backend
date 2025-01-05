@@ -2,14 +2,13 @@ const Transaction = require('../models/Transaction.model')
 
 exports.registerNewTransaction = async (req, res)=>{
     try {
-       const { userID, data, mesRef, valor, tipo } = req.body
+       const { userID,  mesRef, valor, tipo } = req.body
         console.log(req.body)
-    if(!userID || !data || !mesRef || !valor || !tipo){
+    if(!userID || !mesRef || !valor || !tipo){
         return res.status(400).json({ error: 'Dados insuficientes'})
     }
     const newTransaction = new Transaction({
         userID: userID,
-        data: data,
         mesRef: mesRef,
         valor: valor,
         tipo: tipo
@@ -35,11 +34,11 @@ exports.getFinancialReport = async (req, res) => {
       const totalBalance = await Transaction.aggregate([
         { $match: { userID } },
         {
-            $group: {
-                _id: null,
-                totalRecebido: { $sum: { $cond: [{ $eq: ['$tipo', 'recebido'] }, '$valor', 0] } },
-                totalPago: { $sum: { $cond: [{ $eq: ['$tipo', 'pago'] }, '$valor', 0] } }
-              }
+          $group: {
+            _id: null,
+            totalRecebido: { $sum: { $cond: [{ $eq: ['$tipo', 'recebido'] }, '$valor', 0] } },
+            totalPago: { $sum: { $cond: [{ $eq: ['$tipo', 'pago'] }, '$valor', 0] } }
+          }
         }
       ]);
   
@@ -56,7 +55,7 @@ exports.getFinancialReport = async (req, res) => {
       ]);
   
       const result = {
-        saldo: totalBalance[0]?.totalRecebido - totalBalance[0]?.totalPago || 0,
+        saldo: totalBalance[0]?.totalBalance || 0,
         mesRef: mesRef,
         totalRecebido: monthlyTransactions[0]?.totalRecebido || 0,
         totalPago: monthlyTransactions[0]?.totalPago || 0,
