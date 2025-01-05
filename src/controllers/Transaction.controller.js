@@ -11,7 +11,8 @@ exports.registerNewTransaction = async (req, res)=>{
         userID: userID,
         mesRef: mesRef,
         valor: valor,
-        tipo: tipo
+        tipo: tipo,
+        date: new Date().toISOString().slice(0, 10)
     })
 
     await newTransaction.save()
