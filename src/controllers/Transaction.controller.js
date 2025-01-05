@@ -25,35 +25,48 @@ exports.registerNewTransaction = async (req, res)=>{
 
 exports.getFinancialReport = async (req, res) => {
     try {
-        const { userID, mesRef } = req.params
-        if(!userID || !mesRef){
-            return res.status(400).json({ error: 'Dados insuficientes'})
+      const { userID, mesRef } = req.params;
+  
+      if (!userID || !mesRef) {
+        return res.status(400).json({ error: 'Dados insuficientes' });
+      }
+  
+      // Calcula o saldo total
+      const totalBalance = await Transaction.aggregate([
+        { $match: { userID } },
+        {
+          $group: {
+            _id: null,
+            totalBalance: { $sum: '$valor' }
+          }
         }
-        const transaction = await Transaction.aggregate([
-            {
-                $match: {
-                    userID,
-                    mesRef
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    totalRecebido: { $sum: { $cond: [{ $eq: ['$tipo', 'recebido']}, '$valor', 0] } },
-                    totalPago: { $sum: { $cond: [{ $eq: ['$tipo', 'pago']}, '$valor', 0] } }
-                }
-            }
-        ]);
-        const result = transaction[0] || { }
-
-        return ({
-            totalRecebido: result.totalRecebido || 0,
-            totalPago: result.totalPago || 0,
-            saldo: (result.totalRecebido || 0) - (result.totalPago || 0)
-            
-        }, res.status(200).json({ message: 'Relatório financeiro gerado com sucesso', result}))
+      ]);
+  
+      // Obtém as transações do mês específico
+      const monthlyTransactions = await Transaction.aggregate([
+        { $match: { userID, mesRef } },
+        {
+          $group: {
+            _id: null,
+            totalRecebido: { $sum: { $cond: [{ $eq: ['$tipo', 'recebido'] }, '$valor', 0] } },
+            totalPago: { $sum: { $cond: [{ $eq: ['$tipo', 'pago'] }, '$valor', 0] } }
+          }
+        }
+      ]);
+  
+      const result = {
+        saldo: totalBalance[0]?.totalBalance || 0,
+        mesReferencia: mesRef,
+        totalRecebido: monthlyTransactions[0]?.totalRecebido || 0,
+        totalPago: monthlyTransactions[0]?.totalPago || 0,
+      };
+  
+      return res.status(200).json({
+        message: 'Relatório financeiro gerado com sucesso',
+        dados: result
+      });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error })
+      console.error(error);
+      return res.status(500).json({ error: error });
     }
-}
+  };
