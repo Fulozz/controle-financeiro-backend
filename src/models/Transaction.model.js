@@ -7,6 +7,7 @@ const transactionSchema = new Schema({
     mesRef: { type: String, required: true},
     valor: { type: Number, required: true},
     tipo: { type: String, required: true},
+    date: { type: Date, default: Date.toString().slice(0, 10)}
 },{
     timestamps: true,
     collection: 'transactions'
