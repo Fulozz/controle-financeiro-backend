@@ -15,7 +15,7 @@ const app = express();
 const index = require('./routes/index')
 const userRoutes = require('./routes/User.routes')
 const leadRoutes = require('./routes/Lead.routes')
-
+const transactionRoutes = require('./routes/Transaction.routes')
 
 
 app.use(express.urlencoded({ extended : true }));
@@ -29,5 +29,6 @@ app.set("mongoose connection", mongooseConnection);
 app.use(index);
 app.use('/api/v1', userRoutes)
 app.use('/api/v1', leadRoutes)
+app.use('/api/v1', transactionRoutes)
 
 module.exports = app;
