@@ -3,7 +3,7 @@ const router = express.Router();
 const transactionController = require('../controllers/Transaction.controller')
 const auth  = require('../middleware/Auth.middleware')
 
-router.post('/transaction/register', auth, transactionController.registerNewTransaction);
+router.post('/transaction/register', transactionController.registerNewTransaction);
 
 router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.getFinancialReport);
 
