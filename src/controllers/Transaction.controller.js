@@ -2,7 +2,7 @@ const Transaction = require('../models/Transaction.model')
 
 exports.registerNewTransaction = async (req, res)=>{
     try {
-       const { userID, titulo, parcelas, descricao, formaPagament, date, mesRef, valor, tipo } = req.body
+       const { userID, titulo, parcelas, descricao, formaPagament, date, mesRef, valor, tipo, status } = req.body
         console.log(req.body)
     if(!userID || !mesRef || !valor || !tipo || !date || !titulo || !descricao){
         return res.status(400).json({ error: 'Dados insuficientes'})
@@ -11,6 +11,7 @@ exports.registerNewTransaction = async (req, res)=>{
         userID: userID,
         titulo: titulo,
         descricao: descricao,
+        status: status,
         formaPagamento: formaPagament,
         parcelas: parcelas,
         mesRef: mesRef,
@@ -42,6 +43,7 @@ exports.getTransactionsByMonth = async (req, res) => {
 
     const data = transactions.map(transaction => ({
       id: transaction._id,
+      titulo: transaction.titulo,
       date: transaction.date,
       status: transaction.status,
       descricao: transaction.descricao,
