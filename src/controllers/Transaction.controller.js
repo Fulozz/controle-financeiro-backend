@@ -47,7 +47,7 @@ exports.getTransactionsByMonth = async (req, res) => {
       descricao: transaction.descricao,
       valor: transaction.valor
     }));
-
+    console.log(data);
     return res.status(200).json({ data });
   } catch (error) {
     console.error(error);
