@@ -7,6 +7,6 @@ router.post('/transaction/register', transactionController.registerNewTransactio
 
 router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.getFinancialReport);
 
-router.get('/transaction/finances/recent/:userID/:mesRef', auth, transactionController.getFinancialReport);
+router.get('/transaction/finances/recent/:userID/:mesRef', auth, transactionController.getTransactionsByMonth);
 
 module.exports = router;
