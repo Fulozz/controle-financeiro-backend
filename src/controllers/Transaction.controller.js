@@ -27,6 +27,65 @@ exports.registerNewTransaction = async (req, res)=>{
         return res.status(500).json({ error: error })
     }
 }
+exports.registerRecurringTransaction = async (req, res) => {
+  try {
+    const { userID, titulo, parcelas, descricao, formaPagament, date, mesRef, valor, tipo, status, recurrence } = req.body;
+    console.log(req.body);
+    if (!userID || !mesRef || !valor || !tipo || !date || !titulo || !descricao || !recurrence) {
+      return res.status(400).json({ error: 'Dados insuficientes' });
+    }
+
+    const newTransaction = new Transaction({
+      userID: userID,
+      titulo: titulo,
+      descricao: descricao,
+      status: status,
+      formaPagamento: formaPagament,
+      parcelas: parcelas,
+      mesRef: mesRef,
+      valor: valor,
+      tipo: tipo,
+      date: date,
+      recurrence: recurrence
+    });
+
+    await newTransaction.save();
+    return res.status(201).json({ message: 'Transação recorrente registrada com sucesso', newTransaction });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error });
+  }
+};
+exports.getRecurringTransactions = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    if (!userID) {
+      return res.status(400).json({ error: 'Dados insuficientes' });
+    }
+
+    const recurringTransactions = await Transaction.find({ userID, recurrence: { $exists: true } });
+
+    if (!recurringTransactions.length) {
+      return res.status(404).json({ message: 'Nenhuma transação recorrente encontrada para o usuário fornecido' });
+    }
+
+    const data = recurringTransactions.map(transaction => ({
+      id: transaction._id,
+      titulo: transaction.titulo,
+      date: transaction.date,
+      status: transaction.status,
+      descricao: transaction.descricao,
+      valor: transaction.valor,
+      recurrence: transaction.recurrence
+    }));
+    console.log(data);
+    return res.status(200).json({ data });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};
 exports.getTransactionsByMonth = async (req, res) => {
   try {
     const { userID, mesRef } = req.params;
