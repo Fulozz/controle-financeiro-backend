@@ -136,7 +136,7 @@ exports.getRecurringTransactions = async (req, res) => {
       recurrence: transaction.recurrence,
        
     }, console.log(transaction)));
-    console.log(data);
+
     return res.status(200).json({ data });
   } catch (error) {
     console.error(error);
@@ -170,7 +170,7 @@ exports.getTransactionsByMonth = async (req, res) => {
       status: transaction.status,
       descricao: transaction.descricao,
       valor: transaction.valor,
-    }));
+    },console.log(transaction)));
     console.log(data);
     return res.status(200).json({ data });
   } catch (error) {
