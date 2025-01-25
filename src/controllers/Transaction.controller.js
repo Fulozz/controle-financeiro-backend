@@ -134,7 +134,8 @@ exports.getRecurringTransactions = async (req, res) => {
       descricao: transaction.descricao,
       valor: transaction.valor,
       recurrence: transaction.recurrence,
-    }));
+       
+    }, console.log(transaction)));
     console.log(data);
     return res.status(200).json({ data });
   } catch (error) {
