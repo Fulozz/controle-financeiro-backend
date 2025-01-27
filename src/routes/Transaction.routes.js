@@ -7,12 +7,11 @@ router.post('/transaction/register', transactionController.registerNewTransactio
 
 router.post('/transaction/register/recurring', transactionController.registerRecurringTransaction);
 
-router.get('/transaction/recurring/:userID', auth, transactionController.getRecurringTransactions);
 
 router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.getFinancialReport);
 
 router.get('/transaction/finances/recent/:userID/:mesRef', auth, transactionController.getTransactionsByMonth);
 
-router.get('/transaction/recurring/:userID', auth, transactionController.getRecurringTransactionsByUser);
+router.get('/transaction/recurring//:userID', auth, transactionController.getRecurringTransactionsByUser);
 
 module.exports = router;
