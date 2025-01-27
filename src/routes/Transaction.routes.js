@@ -13,4 +13,6 @@ router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.
 
 router.get('/transaction/finances/recent/:userID/:mesRef', auth, transactionController.getTransactionsByMonth);
 
+router.get('/transaction/recurring/:userID/:mesRef', auth, transactionController.getRecurringTransactionsByUser);
+
 module.exports = router;

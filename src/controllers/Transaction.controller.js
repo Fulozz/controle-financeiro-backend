@@ -179,6 +179,45 @@ exports.getTransactionsByMonth = async (req, res) => {
     return res.status(500).json({ error: error });
   }
 };
+exports.getRecurringTransactionsByUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    if (!userID) {
+      return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    const recurringTransactions = await Transaction.find({
+      userID,
+      tipo: "recorrente",
+    });
+
+    if (!recurringTransactions.length) {
+      return res
+        .status(404)
+        .json({
+          message:
+            "Nenhuma transação recorrente encontrada para o usuário fornecido",
+        });
+    }
+
+    const data = recurringTransactions.map((transaction) => ({
+      id: transaction._id,
+      titulo: transaction.titulo,
+      date: transaction.date,
+      status: transaction.status,
+      descricao: transaction.descricao,
+      valor: transaction.valor,
+      recurrence: transaction.recurrence,
+      createdAt: transaction.createdAt
+    }));
+
+    return res.status(200).json({ data });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};
 
 exports.getFinancialReport = async (req, res) => {
   try {
