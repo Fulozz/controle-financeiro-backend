@@ -153,9 +153,10 @@ exports.getRecurringTransactionsByUser = async (req, res) => {
     const data = recurringTransactions.map((transaction) => ({
       id: transaction._id,
       titulo: transaction.titulo,
-      date: transaction.date,
+      diaVencimento: transaction.diaVencimento,
       status: transaction.status,
       descricao: transaction.descricao,
+      categoria: transaction.categoria,
       valor: transaction.valor,
       recurrence: transaction.recurrence,
       createdAt: transaction.createdAt
