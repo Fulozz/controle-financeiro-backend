@@ -6,23 +6,14 @@ const Schema = mongoose.Schema;
 const transactionSchema = new Schema({
     userID: { type: String, required: true},
     titulo: { type: String, required: true},
-    mesRef: { type: String, required: true},
-    status: { type: String, required: true},
-    formaPagamento: { type: String},
-    parcelas: { type: Number},
-    descricao: { type: String, required: true},
+    mesRef: { type: String, required: false},
+    status: { type: String, required: false},
+    formaPagamento: { type: String, required: false},
+    parcelas: { type: Number, required: false},
+    descricao: { type: String, required: false},
     valor: { type: Number, required: true},
     tipo: { type: String, required: true},
-    date: { type: String,  required: true },
-    recurrence: {
-        type: { type: String, required: false},
-        startDate: { type: Date, required: false},
-        endDate: { type: Date, required: false},
-        interval: { type: Number, required: false},
-        daysOfWeek: { type: [String], required: false},
-        daysOfMonth: { type: [Number], required: false},
-        monthsOfYear: { type: [String], required: false}
-    }
+    date: { type: String,  required: false }
 },{
     timestamps: true,
     collection: 'transactions'
