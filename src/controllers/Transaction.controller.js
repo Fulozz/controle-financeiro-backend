@@ -53,26 +53,17 @@ exports.registerRecurringTransaction = async (req, res) => {
     const {
       userID,
       titulo,
-      parcelas,
-      descricao,
-      formaPagament,
-      date,
-      mesRef,
+      diaVencimento,
       valor,
       tipo,
-      status,
-      recurrence,
     } = req.body;
     console.log(req.body);
     if (
       !userID ||
-      !mesRef ||
       !valor ||
       !tipo ||
-      !date ||
-      !titulo ||
-      !descricao ||
-      !recurrence
+      !diaVencimento||
+      !titulo
     ) {
       return res.status(400).json({ error: "Dados insuficientes" });
     }
@@ -80,15 +71,9 @@ exports.registerRecurringTransaction = async (req, res) => {
     const newTransaction = new Transaction({
       userID: userID,
       titulo: titulo,
-      descricao: descricao,
-      status: status,
-      formaPagamento: formaPagament,
-      parcelas: parcelas,
-      mesRef: mesRef,
+      diaVencimento: diaVencimento,
       valor: valor,
       tipo: tipo,
-      date: date,
-      recurrence: recurrence,
     });
 
     await newTransaction.save();
