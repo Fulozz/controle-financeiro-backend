@@ -1,6 +1,11 @@
 const User = require('../models/User.model')
 const jwt = require('jsonwebtoken')
 
+// TODO: unificar as transações ao usuario para ficar
+// mais facil de fazer a consulta
+// exemplo: User.find({email: req.body.email}).populate('transactions') 
+// e assim por diante
+// retornando no data: { user, transactions } os dados do usuario e as transações
 exports.registerNewUser = async (req, res)=>{
     try {
         let isUser = await User.find({ email: req.body.email});

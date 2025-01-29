@@ -6,7 +6,8 @@ const Schema = mongoose.Schema;
 const transactionSchema = new Schema({
     userID: { type: String, required: true},
     titulo: { type: String, required: true},
-    mesRef: { type: String, required: false},
+    diaVencimento: { type: String},
+    categoria: { type: String},
     status: { type: String},
     formaPagamento: { type: String},
     parcelas: { type: Number},
