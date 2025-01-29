@@ -13,7 +13,16 @@ const transactionSchema = new Schema({
     descricao: { type: String, required: true},
     valor: { type: Number, required: true},
     tipo: { type: String, required: true},
-    date: { type: String,  required: true }
+    date: { type: String,  required: true },
+    recurrence: {
+        type: { type: String, required: false},
+        startDate: { type: Date, required: false},
+        endDate: { type: Date, required: false},
+        interval: { type: Number, required: false},
+        daysOfWeek: { type: [String], required: false},
+        daysOfMonth: { type: [Number], required: false},
+        monthsOfYear: { type: [String], required: false}
+    }
 },{
     timestamps: true,
     collection: 'transactions'

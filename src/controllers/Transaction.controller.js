@@ -56,14 +56,16 @@ exports.registerRecurringTransaction = async (req, res) => {
       diaVencimento,
       valor,
       tipo,
-    } = req.body;
+      categoria
+       } = req.body;
     console.log(req.body);
     if (
       !userID ||
       !valor ||
       !tipo ||
       !diaVencimento||
-      !titulo
+      !titulo || 
+      !categoria
     ) {
       return res.status(400).json({ error: "Dados insuficientes" });
     }
@@ -74,6 +76,12 @@ exports.registerRecurringTransaction = async (req, res) => {
       diaVencimento: diaVencimento,
       valor: valor,
       tipo: tipo,
+      categoria: categoria,
+      recurrence: {
+        type: "mensal",
+        startDate: new Date(),
+        endDate: null,
+      },
     });
 
     await newTransaction.save();
