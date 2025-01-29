@@ -7,13 +7,13 @@ const transactionSchema = new Schema({
     userID: { type: String, required: true},
     titulo: { type: String, required: true},
     mesRef: { type: String, required: false},
-    status: { type: String, required: false},
-    formaPagamento: { type: String, required: false},
-    parcelas: { type: Number, required: false},
-    descricao: { type: String, required: false},
+    status: { type: String},
+    formaPagamento: { type: String},
+    parcelas: { type: Number},
+    descricao: { type: String},
     valor: { type: Number, required: true},
     tipo: { type: String, required: true},
-    date: { type: String,  required: false }
+    date: { type: String, }
 },{
     timestamps: true,
     collection: 'transactions'
