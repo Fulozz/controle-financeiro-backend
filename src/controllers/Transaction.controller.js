@@ -76,12 +76,7 @@ exports.registerRecurringTransaction = async (req, res) => {
       diaVencimento: diaVencimento,
       valor: valor,
       tipo: tipo,
-      categoria: categoria,
-      recurrence: {
-        type: "mensal",
-        startDate: new Date(),
-        endDate: null,
-      },
+      categoria: categoria
     });
 
     await newTransaction.save();
