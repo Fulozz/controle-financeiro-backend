@@ -18,3 +18,5 @@ router.get('/validate-token', auth, (req, res)=>{
 })
 
 module.exports = router
+// ==> Rota responsavel por atualizar o perfil do usuario: (PUT) localhost:3000/api/v1/updateProfile
+router.put('/user/update/:id', auth, userController.updateUserProfile);
