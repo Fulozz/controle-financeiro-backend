@@ -7,6 +7,7 @@ const transactionSchema = new Schema({
     userID: { type: String, required: true},
     titulo: { type: String, required: true},
     diaVencimento: { type: String},
+    mesRef: { type: String},
     categoria: { type: String},
     status: { type: String},
     formaPagamento: { type: String},
