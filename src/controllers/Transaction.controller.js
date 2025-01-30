@@ -48,6 +48,7 @@ exports.registerNewTransaction = async (req, res) => {
     return res.status(500).json({ error: error });
   }
 };
+
 exports.registerRecurringTransaction = async (req, res) => {
   try {
     const {
