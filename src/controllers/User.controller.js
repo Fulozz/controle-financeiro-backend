@@ -63,16 +63,21 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ error: 'User not found!' });
         }
 
-        // Atualiza apenas os campos fornecidos no body
         updates.forEach(update => {
-          if (update === 'config') {
-            // Lida com a atualização do objeto config separadamente
-            Object.keys(req.body.config).forEach(configKey => {
-              user.config[configKey] = req.body.config[configKey];
-            });
-          } else {
-            user[update] = req.body[update];
-          }
+            if (update === 'config') {
+                // Lógica para lidar com o campo config
+                if (user.config) {
+                    // Se config já existe, atualiza apenas os campos fornecidos
+                    Object.keys(req.body.config).forEach(key => {
+                        user.config[key] = req.body.config[key];
+                    });
+                } else {
+                    // Se config não existe, cria um novo objeto config com os dados fornecidos
+                    user.config = req.body.config;
+                }
+            } else {
+                user[update] = req.body[update];
+            }
         });
 
         await user.save();
