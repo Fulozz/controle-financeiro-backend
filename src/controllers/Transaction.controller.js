@@ -57,17 +57,28 @@ exports.registerRecurringTransaction = async (req, res) => {
       valor,
       tipo,
       categoria
-       } = req.body;
+    } = req.body;
     console.log(req.body);
     if (
       !userID ||
       !valor ||
       !tipo ||
-      !diaVencimento||
-      !titulo || 
+      !diaVencimento ||
+      !titulo ||
       !categoria
     ) {
       return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    // Verifica se já existe uma transação recorrente com o mesmo título para o usuário
+    const existingTransaction = await Transaction.findOne({
+      userID,
+      titulo,
+      tipo: "recorrente"
+    });
+
+    if (existingTransaction) {
+      return res.status(400).json({ error: "Transação recorrente com este título já existe" });
     }
 
     const newTransaction = new Transaction({
