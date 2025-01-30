@@ -49,7 +49,7 @@ exports.returnUserProfile = async (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['name', 'diaVencimento'];
+    const allowedUpdates = ['name', 'config', 'password'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
@@ -63,7 +63,18 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ error: 'User not found!' });
         }
 
-        updates.forEach(update => user[update] = req.body[update]);
+        // Atualiza apenas os campos fornecidos no body
+        updates.forEach(update => {
+          if (update === 'config') {
+            // Lida com a atualização do objeto config separadamente
+            Object.keys(req.body.config).forEach(configKey => {
+              user.config[configKey] = req.body.config[configKey];
+            });
+          } else {
+            user[update] = req.body[update];
+          }
+        });
+
         await user.save();
 
         res.status(200).json({ message: 'User updated successfully!', user });
