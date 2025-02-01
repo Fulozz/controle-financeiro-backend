@@ -12,7 +12,7 @@ const userSchema = new Schema({
     email: { type: String, maxLenght: 30, required: true, unique: true},
     password: { type: String, maxLenght: 50, required: true},
     config: {
-        diaVencimento: { type: Number},
+        diaVencimento: { type: Number },
         theme: { type: String},
         currency: { type: String},
     },
