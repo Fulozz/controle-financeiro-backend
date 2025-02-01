@@ -73,6 +73,7 @@ exports.updateUserProfile = async (req, res) => {
                     });
                 } else {
                     // Se config não existe, cria um novo objeto config com os dados fornecidos
+                    console.log('config', req.body.config); 
                     user.config = req.body.config;
                 }
             } else {
