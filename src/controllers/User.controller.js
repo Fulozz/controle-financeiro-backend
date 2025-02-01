@@ -44,7 +44,15 @@ exports.loginUser = async(req,res)=>{
 
 // ==> Método responsável por retornar todos os dados de um determinado 'User'
 exports.returnUserProfile = async (req, res) => {
-    await res.json( req.userData );
+    try {
+        const user = await User.findById(req.userData._id).select('name email diaVencimento currency');
+        if (!user) {
+            return res.status(404).json({ error: 'User not found!' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
 exports.updateUserProfile = async (req, res) => {

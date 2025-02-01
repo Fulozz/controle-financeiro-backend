@@ -3,7 +3,6 @@ const Email = require('../models/Lead.model');
 const sendEmail = require('../utils/sendEmail');
 
 exports.registerNewLead = async (req, res)=>{
-    console.log(req.body)
     try {
         const newLead = new Email({
             email: req.body.email,

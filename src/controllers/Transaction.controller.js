@@ -14,7 +14,6 @@ exports.registerNewTransaction = async (req, res) => {
       tipo,
       status,
     } = req.body;
-    console.log(req.body);
     if (
       !userID ||
       !mesRef ||
@@ -59,7 +58,6 @@ exports.registerRecurringTransaction = async (req, res) => {
       tipo,
       categoria
     } = req.body;
-    console.log(req.body);
     if (
       !userID ||
       !valor ||
@@ -237,8 +235,6 @@ exports.getFinancialReport = async (req, res) => {
       totalRecebido: monthlyTransactions[0]?.totalRecebidoMes || 0,
       totalPago: monthlyTransactions[0]?.totalPagoMes || 0,
     };
-
-    console.log(result, totalRecebido, totalPago, monthlyTransactions);
     return res.status(200).json({
       message: "Relatório financeiro gerado com sucesso",
       dados: result,
