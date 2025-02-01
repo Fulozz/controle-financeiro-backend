@@ -11,11 +11,8 @@ const userSchema = new Schema({
     name: { type: String, maxLenght: 50, required: true},
     email: { type: String, maxLenght: 30, required: true, unique: true},
     password: { type: String, maxLenght: 50, required: true},
-    config: {
-        diaVencimento: { type: Number },
-        theme: { type: String},
-        currency: { type: String},
-    },
+    diaVencimento: { type: String},
+    currency: { type: String},
     tokens: [{
         token: { type: String, required: true}
     }
