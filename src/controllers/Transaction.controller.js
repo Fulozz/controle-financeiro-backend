@@ -48,24 +48,61 @@ exports.registerNewTransaction = async (req, res) => {
   }
 };
 
-exports.registerRecurringTransaction = async (req, res) => {
+exports.registerNewInstallments = async (req, res) => {
   try {
     const {
       userID,
       titulo,
-      diaVencimento,
+      parcelas,
+      descricao,
+      formaPagament,
+      date,
+      mesRef,
       valor,
       tipo,
-      categoria
+      status,
     } = req.body;
     if (
       !userID ||
+      !mesRef ||
       !valor ||
       !tipo ||
-      !diaVencimento ||
+      !date ||
       !titulo ||
-      !categoria
+      !descricao ||
+      !parcelas
     ) {
+      return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    const valorParcela = valor / parcelas;
+
+    const newTransaction = new Transaction({
+      userID: userID,
+      titulo: titulo,
+      descricao: descricao,
+      status: status,
+      formaPagamento: formaPagament,
+      parcelas: parcelas,
+      mesRef: mesRef,
+      valor: valor,
+      valorParcela: valorParcela,
+      tipo: tipo,
+      date: date,
+    });
+
+    await newTransaction.save();
+    return res.status(201).json({ message: "Transação registrada com sucesso", newTransaction });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error });
+  }
+}
+
+exports.registerRecurringTransaction = async (req, res) => {
+  try {
+    const { userID, titulo, diaVencimento, valor, tipo, categoria } = req.body;
+    if (!userID || !valor || !tipo || !diaVencimento || !titulo || !categoria) {
       return res.status(400).json({ error: "Dados insuficientes" });
     }
 
@@ -73,11 +110,13 @@ exports.registerRecurringTransaction = async (req, res) => {
     const existingTransaction = await Transaction.findOne({
       userID,
       titulo,
-      tipo: "recorrente"
+      tipo: "recorrente",
     });
 
     if (existingTransaction) {
-      return res.status(400).json({ error: "Transação recorrente com este título já existe" });
+      return res
+        .status(400)
+        .json({ error: "Transação recorrente com este título já existe" });
     }
 
     const newTransaction = new Transaction({
@@ -86,22 +125,19 @@ exports.registerRecurringTransaction = async (req, res) => {
       diaVencimento: diaVencimento,
       valor: valor,
       tipo: tipo,
-      categoria: categoria
+      categoria: categoria,
     });
 
     await newTransaction.save();
-    return res
-      .status(201)
-      .json({
-        message: "Transação recorrente registrada com sucesso",
-        newTransaction,
-      });
+    return res.status(201).json({
+      message: "Transação recorrente registrada com sucesso",
+      newTransaction,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error });
   }
 };
-
 
 exports.getTransactionsByMonth = async (req, res) => {
   try {
@@ -114,12 +150,9 @@ exports.getTransactionsByMonth = async (req, res) => {
     const transactions = await Transaction.find({ userID, mesRef });
 
     if (!transactions.length) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Nenhuma transação encontrada para o mês e usuário fornecidos",
-        });
+      return res.status(404).json({
+        message: "Nenhuma transação encontrada para o mês e usuário fornecidos",
+      });
     }
 
     const data = transactions.map((transaction) => ({
@@ -129,7 +162,7 @@ exports.getTransactionsByMonth = async (req, res) => {
       status: transaction.status,
       descricao: transaction.descricao,
       valor: transaction.valor,
-      createdAt: transaction.createdAt
+      createdAt: transaction.createdAt,
     }));
     console.log(data);
     return res.status(200).json({ data });
@@ -152,12 +185,10 @@ exports.getRecurringTransactionsByUser = async (req, res) => {
     });
 
     if (!recurringTransactions.length) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Nenhuma transação recorrente encontrada para o usuário fornecido",
-        });
+      return res.status(404).json({
+        message:
+          "Nenhuma transação recorrente encontrada para o usuário fornecido",
+      });
     }
 
     const data = recurringTransactions.map((transaction) => ({
@@ -169,7 +200,7 @@ exports.getRecurringTransactionsByUser = async (req, res) => {
       categoria: transaction.categoria,
       valor: transaction.valor,
       recurrence: transaction.recurrence,
-      createdAt: transaction.createdAt
+      createdAt: transaction.createdAt,
     }));
 
     return res.status(200).json({ data });
