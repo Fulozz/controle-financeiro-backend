@@ -49,6 +49,7 @@ exports.returnUserProfile = async (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
     const updates = Object.keys(req.body);
+    console.log(updates);   
     const allowedUpdates = ['name', 'password', 'diaVencimento', 'currency'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
