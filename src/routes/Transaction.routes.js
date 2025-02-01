@@ -4,32 +4,38 @@ const transactionController = require('../controllers/Transaction.controller')
 const auth  = require('../middleware/Auth.middleware')
 
 
-router.post('/transaction/register', transactionController.registerNewTransaction);
+router.post('/transaction/register', auth, transactionController.registerNewTransaction);
 
 /**
  * @route POST /transaction/register
  * @description Route responsible for creating a new 'Transaction'
- * @access Public
+ * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {void}
  */
 
-router.post('/transaction/register/recurring', transactionController.registerRecurringTransaction);
-
+router.post('/transaction/register/recurring', auth, transactionController.registerRecurringTransaction);
 /**
  * @route POST /transaction/register/recurring
  * @description Route responsible for creating a new recurring 'Transaction'
- * @access Public
+ * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {void}
  */
 
-router.post('/transaction/register/installments', transactionController.registerNewInstallments);
+router.post('/transaction/register/installments', auth,transactionController.registerNewInstallments);
+/**
+ * @route POST /transaction/register/installments
+ * @description Route responsible for creating a new installments 'Transaction'
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void}
+ */
 
 router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.getFinancialReport);
-
 /**
  * @route GET /transaction/finances/:userID/:mesRef
  * @description Route responsible for getting the financial report for a user
