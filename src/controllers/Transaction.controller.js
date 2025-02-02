@@ -48,53 +48,41 @@ exports.registerNewTransaction = async (req, res) => {
   }
 };
 
-exports.registerNewInstallments = async (req, res) => {
+exports.getRecurringTransactionsByUser = async (req, res) => {
   try {
-    const {
-      userID,
-      titulo,
-      parcelas,
-      descricao,
-      formaPagament,
-      date,
-      mesRef,
-      valor,
-      tipo,
-      status,
-    } = req.body;
-    if (
-      !userID ||
-      !mesRef ||
-      !valor ||
-      !tipo ||
-      !date ||
-      !titulo ||
-      !descricao ||
-      !parcelas
-    ) {
+    const { userID } = req.params;
+
+    if (!userID) {
       return res.status(400).json({ error: "Dados insuficientes" });
     }
 
-    const valorParcela = valor / parcelas;
-
-    const newTransaction = new Transaction({
-      userID: userID,
-      titulo: titulo,
-      descricao: descricao,
-      status: status,
-      formaPagamento: formaPagament,
-      parcelas: parcelas,
-      mesRef: mesRef,
-      valor: valor,
-      valorParcela: valorParcela,
-      tipo: tipo,
-      date: date,
+    const recurringTransactions = await Transaction.find({
+      userID,
+      tipo: "recorrente",
     });
 
-    await newTransaction.save();
-    return res.status(201).json({ message: "Transação registrada com sucesso", newTransaction });
+    if (!recurringTransactions.length) {
+      return res.status(404).json({
+        message:
+          "Nenhuma transação recorrente encontrada para o usuário fornecido",
+      });
+    }
+
+    const data = recurringTransactions.map((transaction) => ({
+      id: transaction._id,
+      titulo: transaction.titulo,
+      diaVencimento: transaction.diaVencimento,
+      status: transaction.status,
+      descricao: transaction.descricao,
+      categoria: transaction.categoria,
+      valor: transaction.valor,
+      recurrence: transaction.recurrence,
+      createdAt: transaction.createdAt,
+    }));
+
+    return res.status(200).json({ data });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: error });
   }
 }
@@ -171,44 +159,7 @@ exports.getTransactionsByMonth = async (req, res) => {
     return res.status(500).json({ error: error });
   }
 };
-exports.getRecurringTransactionsByUser = async (req, res) => {
-  try {
-    const { userID } = req.params;
-
-    if (!userID) {
-      return res.status(400).json({ error: "Dados insuficientes" });
-    }
-
-    const recurringTransactions = await Transaction.find({
-      userID,
-      tipo: "recorrente",
-    });
-
-    if (!recurringTransactions.length) {
-      return res.status(404).json({
-        message:
-          "Nenhuma transação recorrente encontrada para o usuário fornecido",
-      });
-    }
-
-    const data = recurringTransactions.map((transaction) => ({
-      id: transaction._id,
-      titulo: transaction.titulo,
-      diaVencimento: transaction.diaVencimento,
-      status: transaction.status,
-      descricao: transaction.descricao,
-      categoria: transaction.categoria,
-      valor: transaction.valor,
-      recurrence: transaction.recurrence,
-      createdAt: transaction.createdAt,
-    }));
-
-    return res.status(200).json({ data });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: error });
-  }
-};
+;
 
 exports.getFinancialReport = async (req, res) => {
   try {
@@ -270,6 +221,98 @@ exports.getFinancialReport = async (req, res) => {
       message: "Relatório financeiro gerado com sucesso",
       dados: result,
     });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};
+
+
+exports.registerNewInstallments = async (req, res) => {
+  try {
+    const {
+      userID,
+      titulo,
+      parcelas,
+      descricao,
+      formaPagament,
+      date,
+      mesRef,
+      valor,
+      tipo,
+      status,
+    } = req.body;
+    if (
+      !userID ||
+      !mesRef ||
+      !valor ||
+      !tipo ||
+      !date ||
+      !titulo ||
+      !descricao ||
+      !parcelas
+    ) {
+      return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    const valorParcela = valor / parcelas;
+
+    const newTransaction = new Transaction({
+      userID: userID,
+      titulo: titulo,
+      descricao: descricao,
+      status: status,
+      formaPagamento: formaPagament,
+      parcelas: parcelas,
+      mesRef: mesRef,
+      valor: valor,
+      valorParcela: valorParcela,
+      tipo: tipo,
+      date: date,
+    });
+
+    await newTransaction.save();
+    return res.status(201).json({ message: "Transação registrada com sucesso", newTransaction });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error });
+  }
+}
+exports.getInstallmentsByUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    if (!userID) {
+      return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    const installments = await Transaction.find({
+      userID,
+      parcelas: { $gt: 1 },
+    });
+
+    if (!installments.length) {
+      return res.status(404).json({
+        message: "Nenhuma parcela encontrada para o usuário fornecido",
+      });
+    }
+
+    const data = installments.map((transaction) => ({
+      id: transaction._id,
+      titulo: transaction.titulo,
+      parcelas: transaction.parcelas,
+      valorParcela: transaction.valorParcela,
+      status: transaction.status,
+      descricao: transaction.descricao,
+      formaPagamento: transaction.formaPagamento,
+      mesRef: transaction.mesRef,
+      valor: transaction.valor,
+      tipo: transaction.tipo,
+      date: transaction.date,
+      createdAt: transaction.createdAt,
+    }));
+
+    return res.status(200).json({ data });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: error });

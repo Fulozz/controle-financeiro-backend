@@ -5,7 +5,6 @@ const auth  = require('../middleware/Auth.middleware')
 
 
 router.post('/transaction/register', auth, transactionController.registerNewTransaction);
-
 /**
  * @route POST /transaction/register
  * @description Route responsible for creating a new 'Transaction'
