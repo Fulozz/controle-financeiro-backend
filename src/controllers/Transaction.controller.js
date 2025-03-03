@@ -263,7 +263,7 @@ exports.getFinancialReportByUser = async (req, res) => {
       tipo: transaction.tipo,
       createdAt: transaction.createdAt,
     }));
-
+    console.log(data)
     return res.status(200).json({
       message: "Relatório financeiro gerado com sucesso",
       saldo,
