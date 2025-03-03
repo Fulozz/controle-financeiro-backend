@@ -37,6 +37,16 @@ router.post('/transaction/register/installments', auth,transactionController.reg
 router.get('/transaction/finances/:userID/:mesRef', auth, transactionController.getFinancialReport);
 /**
  * @route GET /transaction/finances/:userID/:mesRef
+ * @description Route responsible for getting the financial report for a user by month
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void}
+ */
+
+router.get('/transaction/finances/report/:userId', auth, transactionController.getFinancialReportByUser)
+/**
+ * @route GET /transaction/finances/report/:userID
  * @description Route responsible for getting the financial report for a user
  * @access Private
  * @param {Object} req - Express request object

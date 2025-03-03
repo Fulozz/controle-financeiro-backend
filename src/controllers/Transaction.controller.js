@@ -227,6 +227,55 @@ exports.getFinancialReport = async (req, res) => {
   }
 };
 
+exports.getFinancialReportByUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    if (!userID) {
+      return res.status(400).json({ error: "Dados insuficientes" });
+    }
+
+    const transactions = await Transaction.find({ userID });
+
+    if (!transactions.length) {
+      return res.status(404).json({
+        message: "Nenhuma transação encontrada para o usuário fornecido",
+      });
+    }
+
+    const totalRecebido = transactions
+      .filter((transaction) => transaction.tipo === "recebido")
+      .reduce((acc, transaction) => acc + transaction.valor, 0);
+
+    const totalPago = transactions
+      .filter((transaction) => transaction.tipo === "pago")
+      .reduce((acc, transaction) => acc + transaction.valor, 0);
+
+    const saldo = totalRecebido - totalPago;
+
+    const data = transactions.map((transaction) => ({
+      id: transaction._id,
+      titulo: transaction.titulo,
+      date: transaction.date,
+      status: transaction.status,
+      descricao: transaction.descricao,
+      valor: transaction.valor,
+      tipo: transaction.tipo,
+      createdAt: transaction.createdAt,
+    }));
+
+    return res.status(200).json({
+      message: "Relatório financeiro gerado com sucesso",
+      saldo,
+      totalRecebido,
+      totalPago,
+      transacoes: data,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};
 
 exports.registerNewInstallments = async (req, res) => {
   try {
