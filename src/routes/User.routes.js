@@ -14,11 +14,7 @@ router.post('/login', userController.loginUser)
 router.get('/profile', auth, userController.returnUserProfile)
 
 router.post('/validate-token', auth, (req, res)=>{
-    if (req.isValid) {
-        res.status(200).json({ valid: true, ok: true });
-      } else {
-        res.status(401).json({ valid: false, ok: false });
-      }
+    return res.json({ isAuthenticated: true, ok: true, isValid:  true })
 })
 
 // ==> Rota responsavel por atualizar o perfil do usuario: (PUT) localhost:3000/api/v1/user/update/:id
