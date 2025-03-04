@@ -13,7 +13,7 @@ router.post('/login', userController.loginUser)
 // ==> Rota responsavel por acessar o perfil do usuario: (GET) localhost:3000/api/v1/userProfile
 router.get('/profile', auth, userController.returnUserProfile)
 
-router.get('/validate-token', auth, (req, res)=>{
+router.post('/validate-token', auth, (req, res)=>{
     if (req.isValid) {
         res.status(200).json({ valid: true, ok: true });
       } else {
