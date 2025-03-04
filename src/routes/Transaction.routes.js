@@ -54,9 +54,9 @@ router.get('/transaction/finances/report/:userId', auth, transactionController.g
  * @returns {void}
  */
 
-router.get('/transaction/finances/recent/:userID/:mesRef', auth, transactionController.getTransactionsByMonth);
+router.get('/transaction/finances/recent/:userID', auth, transactionController.getTransactions);
 /**
- * @route GET /transaction/finances/recent/:userID/:mesRef
+ * @route GET /transaction/finances/recent/:userID
  * @description Route responsible for getting recent transactions by month for a user
  * @access Private
  * @param {Object} req - Express request object

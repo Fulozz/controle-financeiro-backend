@@ -127,15 +127,15 @@ exports.registerRecurringTransaction = async (req, res) => {
   }
 };
 
-exports.getTransactionsByMonth = async (req, res) => {
+exports.getTransactions = async (req, res) => {
   try {
-    const { userID, mesRef } = req.params;
+    const { userID } = req.params;
 
-    if (!userID || !mesRef) {
+    if (!userID ) {
       return res.status(400).json({ error: "Dados insuficientes" });
     }
 
-    const transactions = await Transaction.find({ userID, mesRef });
+    const transactions = await Transaction.find({ userID });
 
     if (!transactions.length) {
       return res.status(404).json({
